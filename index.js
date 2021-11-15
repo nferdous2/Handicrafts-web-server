@@ -13,9 +13,7 @@ const port = process.env.PORT || 5000;
 app.get('/', (req, res) => {
     res.send('Running Decore And craft server')
 });
-app.get('/try', (req, res) => {
-    res.send('working')
-});
+
 
 
 async function run() {

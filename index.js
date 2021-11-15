@@ -56,6 +56,13 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updateDoc);
             res.json(result)
         })
+
+        //get review
+        app.get('/review', async (req, res) => {
+            const cursor = productsCollection.find({});
+            const review = await cursor.toArray();
+            res.send(review);
+        });
         //add review
         app.post('/review', async (req, res) => {
             const review = req.body;

@@ -57,12 +57,13 @@ async function run() {
 
         //get review
         app.get('/review', async (req, res) => {
-            const cursor = productsCollection.find({});
+            const cursor = addReviewCollection.find({});
             const review = await cursor.toArray();
-            res.send(review);
+            console.log('review')
+            res.json(review);
         });
         //add review
-        app.post('/review', async (req, res) => {
+        app.post('/addReview', async (req, res) => {
             const review = req.body;
             const result = await addReviewCollection.insertOne(review);
             console.log(result);

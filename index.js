@@ -23,15 +23,24 @@ async function run() {
         const productsCollection = database.collection("products");
         const usersCollection = database.collection('users');
         const addReviewCollection = database.collection('review')
+        const orderCollection = database.collection('myOrders')
         // get api
         app.get('/products', async (req, res) => {
             const cursor = productsCollection.find({});
             const products = await cursor.toArray();
             res.send(products);
         });
+        //add product
+        app.post('/products', async (req, res) => {
+            const product = req.body;
+            const resultP = await productsCollection.insertOne(product);
+            console.log(resultP);
+            res.json(resultP)
+        });
         //post for add register users
         app.post('/users', async (req, res) => {
             const user = req.body;
+
             const result = await usersCollection.insertOne(user);
             console.log(result);
             res.json(result);
@@ -46,20 +55,19 @@ async function run() {
             }
             res.json({ admin: isAdmin });
         })
-        //making admin
-        app.put('/users/admin', async (req, res) => {
-            const user = req.body;
-            const filter = { email: user.email };
-            const updateDoc = { $set: { role: "admin" } };
-            const result = await usersCollection.updateOne(filter, updateDoc);
-            res.json(result)
-        })
+        // // //making admin
+        // app.put('/users/admin', async (req, res) => {
+        //     const user = req.body;
+        //     const filter = { email: user.email };
+        //     const updateDoc = { $set: { role: "admin" } };
+        //     const result = await usersCollection.updateOne(filter, updateDoc);
+        //     res.json(result)
+        // })
 
         //get review
         app.get('/review', async (req, res) => {
             const cursor = addReviewCollection.find({});
             const review = await cursor.toArray();
-            console.log('review')
             res.json(review);
         });
         //add review
@@ -70,19 +78,26 @@ async function run() {
             res.json(result)
 
         });
-        //orders handle
-        app.post('/myOrders', async (req, res) => {
-            const orders = req.body;
-            const result = await addReviewCollection.insertOne(orders);
-            console.log(result);
-            res.json(result)
 
+        //orders handle
+
+        app.post('/myOrders', async (req, res) => {
+            const product = req.body;
+            const resultP = await orderCollection.insertOne(product);
+            console.log(resultP);
+            res.json(resultP)
         });
+        app.get('/myOrders', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+        });
+
         //delete api
-        app.delete('/products/:id', async (req, res) => {
+        app.delete('/myOrders/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const result = await productsCollection.deleteOne(query);
+            const result = await orderCollection.deleteOne(query);
             res.json(result);
         })
 

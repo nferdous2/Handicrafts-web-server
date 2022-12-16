@@ -9,12 +9,10 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.yhxur.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 // console.log(uri)
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 10000;
 app.get('/', (req, res) => {
     res.send('Running Decore And craft server')
 });
-
-
 
 async function run() {
     try {
